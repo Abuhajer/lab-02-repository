@@ -45,7 +45,7 @@ const ajaxSettings = {
   dataType: 'json',
 };
 
-$.ajax('../data/page-1.json', ajaxSettings).then((data) => {
+$.ajax('data/page-1.json', ajaxSettings).then((data) => {
   let optionChose='default';
   $('select').change(function() {
     optionChose=$(this).children('option:selected').val();
