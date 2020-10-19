@@ -1,0 +1,23 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+width: 100%;
+}
+
+main{
+    font-family: 'Indie Flower', cursive;
+    color: black;
+}
+
+
+footer{
+    font-family: 'Dancing Script', cursive;
+}
+
+header{
+
+    font-family: 'Dancing Script', cursive;
+    
+}
