@@ -1,0 +1,39 @@
+@import 'base.css';
+@import 'modules.css';
+
+header{
+    text-align: center;
+    font-size: xxx-large;
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+main {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
+    font-family: 'Indie Flower', cursive;
+
+}
+
+#photo-template{
+display: inline-block;
+margin-left: auto;
+margin-right: auto;
+width: 30%;
+height: 500px;
+padding: 20 px;
+margin-bottom: 50px;
+
+}
+
+
+
+footer{
+    text-align: center;
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+     
+}
