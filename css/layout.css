@@ -17,14 +17,11 @@ main {
 
 }
 
-#photo-template{
+.photo-template{
 display: inline-block;
-margin-left: auto;
-margin-right: auto;
 width: 30%;
 height: 500px;
 padding: 20 px;
-margin-bottom: 50px;
 
 }
 

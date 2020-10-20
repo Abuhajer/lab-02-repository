@@ -4,7 +4,7 @@ img{
     border-radius: 70px;
 }
 
-#photo-template p{
+.photo-template p{
 padding: 20px;
 font-size: x-large;
 max-width: 300px;
@@ -12,15 +12,14 @@ text-align: center;
 display: inline-block;
 
 }
-
-#photo-template h2{
+.photo-template h2{
     padding: 20px;
     font-size: xx-large;
     font-weight: bolder;
 
     }
 
-header select {
+header select,header input {
     font-family: 'Indie Flower', cursive;
     font-weight: bolder;
     margin-top: 80px;
@@ -28,6 +27,55 @@ header select {
     border: 4px solid black;
 }
 
-header select:focus{
+header select:focus,header input:focus{
     outline: none;
+}
+
+input{
+    padding-left:10px ;
+    padding-right:10px ;
+    margin-left:40px;
+    margin-right:40px;
+    text-align: center;
+    font-size: x-large;
+    cursor: pointer;
+    background-color: transparent;
+
+}
+
+select{ 
+    cursor: pointer;
+    display: block;
+    margin: auto;
+}
+
+
+
+input:hover{
+    color: red;
+    border-color: red;
+    }
+
+#sort{
+    display: inline-block; 
+    width: 100%;
+   
+    margin-top: 20;
+
+}
+
+#sort h2{
+    position: relative;
+    display: inline-block;
+    padding-right: 200px;
+    padding-left: 200px;
+ 
+    cursor: pointer;
+    
+    font-size: 40px;
+}
+
+#sort h2:hover{
+color: red;
+font-size: 50px;
 }

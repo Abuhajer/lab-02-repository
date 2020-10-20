@@ -9,6 +9,7 @@ width: 100%;
 main{
     font-family: 'Indie Flower', cursive;
     color: black;
+    
 }
 
 
@@ -20,4 +21,13 @@ header{
 
     font-family: 'Dancing Script', cursive;
     
+}
+
+#templates{
+width: 60%;
+display:flex;
+flex-wrap: wrap;
+justify-content:space-around;
+align-items:center;
+margin: auto;
 }
