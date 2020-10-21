@@ -1,8 +1,15 @@
 'use strict';
-let Alldata=[];
-let sortTitle=false;
-let sortHorns=false;
-
+//------------------------------------------
+//Main Variables
+let sortTitle = true;
+let sortHorns = false;
+let options = [];
+let tempSectioin = $('#templates').html();
+const ajaxSettings = { method: 'get', dataType: 'json' };
+let jsonFilePath = 'data/page-1.json';
+let optionChose = 'default';
+//------------------------------------------
+//Object Horns Constructor
 function Horns(horn) {
   this.title = horn.title;
   this.image = horn.image_url;
@@ -10,24 +17,8 @@ function Horns(horn) {
   this.keyword = horn.keyword;
   this.horns = horn.horns;
 }
-let tempSectioin;
-tempSectioin = $('#templates').html();
-
-// Horns.prototype.render = function () {
-//   let HornClone;
-//   if (firstTime) {
-//     HornClone = $('#photo-template');
-//   } else {
-//     HornClone = $('#photo-template').clone();
-//   }
-//   firstTime = false;
-//   $('main').append(HornClone);
-//   HornClone.find('h2').text(this.title);
-//   HornClone.find('img').attr('src', this.image);
-//   HornClone.find('p').text(this.description);
-//   HornClone.attr('class', this.name);
-// };
-
+//------------------------------------------
+//Render function
 Horns.prototype.render = function () {
   let temp = $('#templates').html();
   let editHtml = Mustache.render(temp, this);
@@ -36,8 +27,8 @@ Horns.prototype.render = function () {
   sec.addClass('photo-template');
   $('#templates').append(sec);
 };
-
-let options = [];
+//------------------------------------------
+//set the option after render
 Horns.prototype.selectOptions = function () {
   let inc = options.includes(this.keyword);
   if (!inc) {
@@ -48,176 +39,99 @@ Horns.prototype.selectOptions = function () {
     options.push(this.keyword);
   }
 };
-
-const ajaxSettings = {
-  method: 'get',
-  dataType: 'json',
-};
+//------------------------------------------
+//Page 1 Listener
 $('#page1').on('click', function () {
-  options = [];
-  $('select').empty();
-  $('select').html('<option value="default">Filter by Keyword</option>');
-  $('#templates').empty();
-  $('#templates').html(tempSectioin);
-
-  $.ajax('data/page-1.json', ajaxSettings).then((data) => {
-    Alldata=data;
-    if(sortTitle)
-    {
-      Alldata.sort((a, b) => {
-        if (a.title.toUpperCase() > b.title.toUpperCase()) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-    }
-    if(sortHorns)
-    {
-      Alldata.sort((a, b) => {
-        if (a.horns - b.horns) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-    }
-    if(sortHorns)
-    {
-      Alldata.sort((a, b) => {
-        return(a.horns - b.horns) ;
-      });
-    }
-    let optionChose = 'default';
-    $('select').change(function () {
-      optionChose = $(this).children('option:selected').val();
-      $('#templates').empty();
-      $('#templates').html(tempSectioin);
-      Alldata.forEach((hornObj) => {
-        let horn = new Horns(hornObj);
-        //---------------------------
-        if (optionChose === horn.keyword) {
-          horn.render();
-        } else if (optionChose === 'default') {
-          horn.render();
-          horn.selectOptions();
-        }
-      });
-    });
-    Alldata.forEach((hornObj) => {
-      let horn = new Horns(hornObj);
-      //---------------------------
-      if (optionChose === 'default') {
-        horn.render();
-        horn.selectOptions();
-      }
-    });
-  });
+  optionChose = 'default';
+  jsonFilePath = 'data/page-1.json';
+  start(jsonFilePath, optionChose);
 });
-
+//------------------------------------------
+//Page 2 Listener
 $('#page2').on('click', function () {
-  options = [];
-  $('select').empty();
-  $('select').html('<option value="default">Filter by Keyword</option>');
-  $('#templates').empty();
-  $('#templates').html(tempSectioin);
-  $.ajax('data/page-2.json', ajaxSettings).then((data) => {
-    Alldata=data;
-    if(sortTitle)
-    {
-      Alldata.sort((a, b) => {
-        if (a.title.toUpperCase() > b.title.toUpperCase()) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+  optionChose = 'default';
+  jsonFilePath = 'data/page-2.json';
+  start(jsonFilePath, optionChose);
+});
+//------------------------------------------
+//strating rendering after check what page,order and filter
+function start(jsonFilePath, optionChose) {
+  clearTemp();
+  $.ajax(jsonFilePath, ajaxSettings).then((data) => {
+    if (sortTitle) {
+      titleSort(data)
     }
-
-    if(sortHorns)
-    {
-      Alldata.sort((a, b) => {
-        return(a.horns - b.horns) ;
-      });
+    else if (sortHorns) {
+      hornSort(data)
     }
-    let optionChose = 'default';
-    $('select').change(function () {
-      optionChose = $(this).children('option:selected').val();
-      $('#templates').empty();
-      $('#templates').html(tempSectioin);
-      Alldata.forEach((hornObj) => {
-        let horn = new Horns(hornObj);
-        //---------------------------
-        if (optionChose === horn.keyword) {
-          horn.render();
-        } else if (optionChose === 'default') {
-          horn.render();
-          horn.selectOptions();
-        }
-      });
-    });
-    Alldata.forEach((hornObj) => {
+    data.forEach((hornObj) => {
       let horn = new Horns(hornObj);
       //---------------------------
       if (optionChose === 'default') {
         horn.render();
         horn.selectOptions();
       }
-    });
-  });
-});
-
-$.ajax('data/page-1.json', ajaxSettings).then((data) => {
-  Alldata=data;
-  sortTitle=true;
-  if(sortTitle)
-  {
-    Alldata.sort((a, b) => {
-      if (a.title.toUpperCase() > b.title.toUpperCase()) {
-        return 1;
-      } else {
-        return -1;
+      else if (optionChose === horn.keyword) {
+        horn.render();
+        horn.selectOptions();
       }
-    });
-  }
-  let optionChose = 'default';
-  $('select').change(function () {
-    optionChose = $(this).children('option:selected').val();
-    $('#templates').empty();
-    $('#templates').html(tempSectioin);
-    Alldata.forEach((hornObj) => {
-      let horn = new Horns(hornObj);
-      //---------------------------
-      if (optionChose === horn.keyword) {
-        horn.render();
-      } else if (optionChose === 'default') {
-        horn.render();
+      else
+      {
         horn.selectOptions();
       }
     });
   });
-  Alldata.forEach((hornObj) => {
-    let horn = new Horns(hornObj);
-    //---------------------------
-    if (optionChose === 'default') {
-      horn.render();
-      horn.selectOptions();
+}
+//------------------------------------------
+//listener when change filter
+$('select').change(function () {
+  optionChose = $(this).children('option:selected').val();
+  $('#templates').empty();
+  $('#templates').html(tempSectioin);
+  start(jsonFilePath,optionChose);
+});
+//------------------------------------------
+//listener when change order by title
+$('#byTitle').on('click', function () {
+  sortTitle = true;
+  sortHorns = false;
+  start(jsonFilePath,optionChose);
+});
+//------------------------------------------
+//listener when change order by Horns
+$('#byHorns').on('click', function () {
+  sortTitle = false;
+  sortHorns = true;
+  start(jsonFilePath,optionChose);
+});
+//------------------------------------------
+//To clear the template
+function clearTemp() {
+  options = [];
+  $('select').empty();
+  $('select').html('<option value="default">Filter by Keyword</option>');
+  $('#templates').empty();
+  $('#templates').html(tempSectioin);
+}
+//------------------------------------------
+//sorting by title
+function titleSort(arr) {
+  arr.sort((a, b) => {
+    if (a.title.toUpperCase() > b.title.toUpperCase()) {
+      return 1;
+    } else {
+      return -1;
     }
   });
-});
+
+}
+//------------------------------------------
+//sorting by number of horn
+function hornSort(arr) {
+  arr.sort((a, b) => {
+    return (a.horns - b.horns);
+  });
+}
 
 
-$('#byTitle').on('click', function () {
-  sortTitle=true;
-  sortHorns=false;
-
-});
-
-$('#byHorns').on('click', function () {
-  sortTitle=false;
-  sortHorns=true;
-});
-
-
-
-console.log(Alldata);
+start(jsonFilePath, optionChose);
